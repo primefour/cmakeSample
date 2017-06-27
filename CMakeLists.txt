@@ -26,17 +26,19 @@ INCLUDE_DIRECTORIES(${FFMPEG_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/codec)
 #add codec cmake project
 ADD_SUBDIRECTORY(codec)
+ADD_SUBDIRECTORY(jni)
 
 
 #find project source file
 file(GLOB XSOURCE "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-
 #add execute target
 ADD_EXECUTABLE(sample ${XSOURCE})
 
 #add dependence
 add_dependencies(sample codec_static)
 add_dependencies(sample codec_shared)
+add_dependencies(sample jni_codec_static)
+add_dependencies(sample jni_codec_shared)
 
 TARGET_LINK_LIBRARIES(sample ${QT_LIBRARIES} ${CMAKE_CURRENT_BINARY_DIR}/codec/libcodec.a ${FFMPEG_LIBRARIES})
 
