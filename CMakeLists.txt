@@ -3,14 +3,33 @@ PROJECT(sample)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Templates/")
 include(${CMAKE_SOURCE_DIR}/cmake/Templates/Custom.cmake)
 
-FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui)
+set(WITH_QT 5)
+
+if(WITH_QT EQUAL 4)
+    FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui)
+    INCLUDE(${QT_USE_FILE})
+else(WITH_QT EQUAL 4)
+    set(CMAKE_PREFIX_PATH  ${CMAKE_PREFIX_PATH} "/home/crazyhorse/Qt5.9.0/5.9/gcc_64/lib/cmake/Qt5/")
+    find_package(Qt5 REQUIRED Core Gui Widgets)
+    get_target_property(QtCore_location Qt5::Core LOCATION)
+    get_target_property(QtGui_location Qt5::Gui LOCATION)
+    get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
+    set(QT_LIBRARIES ${QtCore_location} ${QtGui_location} ${QtWidgets_location}) 
+    #MESSAGE(STATUS "QtCore_location  = ${QtCore_location}")
+    #MESSAGE(STATUS "Qt5<Module>_LIBRARIES  = ${Qt5Core_LIBRARIES}")
+    MESSAGE(STATUS "QT_LIBRARIES  = ${QT_LIBRARIES}")
+    INCLUDE_DIRECTORIES(${Qt5Gui_INCLUDE_DIRS})
+    MESSAGE(STATUS "Qt5Gui_INCLUDE_DIRS= ${Qt5Gui_INCLUDE_DIRS}")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC -DQT5_LIBRARY")
+endif()
+
 set(CMAKE_AUTOMOC ON)
-INCLUDE(${QT_USE_FILE})
 
 
 #add current directory header file
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+
 
 #find ffmpeg libraries
 find_package(FFMPEG REQUIRED)

@@ -5,12 +5,17 @@
  **        Create: 2017-06-22 10:33:08
  ** Last Modified: 2017-06-22 10:33:08
  ******************************************************************************/
-#include "QtCore/QCoreApplication"
-#include "QtCore/QDebug"
+#ifdef QT5_LIBRARY
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QFrame>
+#include <QtGui/QPainter>
+#else
 #include <QtGui/QApplication>
 #include <QtGui/QLabel>
 #include <QtGui/QFrame>
 #include <QtGui/QPainter>
+#endif
 #include <stddef.h>
 #include <stdint.h>
 #include <unistd.h>
